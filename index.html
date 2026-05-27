@@ -1,9 +1,10 @@
-
-<html lang="fr"><head>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arthur — Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root {
@@ -491,7 +492,7 @@
 <input id="secret-input" type="text" autocomplete="off">
 
 <!-- TOAST -->
-<div class="toast" id="toast">✅ index.html téléchargé ! Mets-le sur GitHub.</div>
+<div class="toast" id="toast"></div>
 
 <!-- ══════════ PUBLIC SITE ══════════ -->
 <div id="public-site">
@@ -508,7 +509,7 @@
       <div class="blob blob-1"></div>
       <div class="blob blob-2"></div>
     </div>
-    <div class="hero-badge">✦ Portfolio &amp; Projets</div>
+    <div class="hero-badge">✦ Portfolio & Projets</div>
     <h1>Bonjour, je suis<br><span class="hero-name-typed">Arthur</span></h1>
     <p>Découvrez mes projets, créations et sites web. Chaque réalisation est une aventure unique.</p>
     <a href="#projets" class="btn btn-primary">Voir mes projets ↓</a>
@@ -516,28 +517,8 @@
 
   <section id="projets">
     <div class="section-title">Mes Projets</div>
-    <div class="section-sub" id="proj-count">2 projets en ligne</div>
-    <div class="projects-grid" id="projects-grid">
-    <div class="project-card">
-      <div class="card-color-bar" style="background:#cc8b00"></div>
-      <img class="card-thumb" src="https://img.sanishtech.com/u/dcf9d58ff8b69525d6ce868e254f9b31.png" alt="Livraison Fronton" onerror="this.style.display='none'">
-      <div class="card-body">
-        <div class="card-title">Livraison Fronton</div>
-        <div class="card-desc">Appli de livraison style "Uber" dynamique et moderne pour des courses en ligne simples et efficaces</div>
-        <a class="card-link" href="https://tomlivraison.figma.site/" target="_blank">Voir le projet →</a>
-      </div>
-    </div>
-  
-    <div class="project-card">
-      <div class="card-color-bar" style="background:#227aec"></div>
-      <img class="card-thumb" src="https://img.sanishtech.com/u/3477e3626e3cbd2a38401bf3225ee76b.png" alt="Workybara" onerror="this.style.display='none'">
-      <div class="card-body">
-        <div class="card-title">Workybara</div>
-        <div class="card-desc">Une appli de révision éducative et pédagogique pour le brevet (En collaboration avec Lyam)</div>
-        <a class="card-link" href="https://workybara.figma.site/" target="_blank">Voir le projet →</a>
-      </div>
-    </div>
-  </div>
+    <div class="section-sub" id="proj-count">Chargement...</div>
+    <div class="projects-grid" id="projects-grid"></div>
   </section>
 
   <section id="contact">
@@ -652,9 +633,10 @@
 </div>
 
 <!-- ══════════ ADMIN PANEL ══════════ -->
-<div id="admin-panel" class="active">
+<div id="admin-panel">
   <div class="admin-header">
     <div class="admin-title">⚙️ Espace Admin</div>
+    <div style="display:flex;gap:10px">
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="exportHTML()" style="background:linear-gradient(135deg,#10b981,#06b6d4);box-shadow:0 4px 16px rgba(16,185,129,.3)">⬇️ Exporter index.html</button>
       <button class="btn btn-ghost" onclick="closeAdmin()">← Retour au site</button>
@@ -662,12 +644,7 @@
     </div>
   </div>
 
-  <div class="stats-bar" id="stats-bar">
-    <div class="stat-chip"><div class="stat-icon">🗂</div><div><div class="stat-val">2</div><div class="stat-lbl">Projets</div></div></div>
-    <div class="stat-chip"><div class="stat-icon">💬</div><div><div class="stat-val">0</div><div class="stat-lbl">Messages</div></div></div>
-    <div class="stat-chip"><div class="stat-icon">🔔</div><div><div class="stat-val">0</div><div class="stat-lbl">Non lus</div></div></div>
-    <div class="stat-chip"><div class="stat-icon">📧</div><div><div class="stat-val" style="font-size:.9rem">arthurretla@gmail.com</div><div class="stat-lbl">Email contact</div></div></div>
-  </div>
+  <div class="stats-bar" id="stats-bar"></div>
 
   <div class="admin-tabs">
     <button class="tab-btn active" onclick="switchTab('projets')">🗂 Projets</button>
@@ -679,33 +656,7 @@
   <!-- TAB: Projets list -->
   <div class="tab-content active" id="tab-projets">
     <div class="section-title" style="margin-bottom:20px">Mes projets</div>
-    <div class="admin-project-list" id="admin-project-list">
-    <div class="admin-project-item">
-      <img class="admin-item-thumb" src="https://img.sanishtech.com/u/dcf9d58ff8b69525d6ce868e254f9b31.png" alt="Livraison Fronton" onerror="this.innerHTML='🚀';this.style.display='flex'">
-      <div style="width:4px;height:40px;border-radius:4px;background:#cc8b00;flex-shrink:0"></div>
-      <div class="admin-item-info">
-        <div class="admin-item-name">Livraison Fronton</div>
-        <div class="admin-item-url">https://tomlivraison.figma.site/</div>
-      </div>
-      <div class="admin-item-actions">
-        <button class="btn-icon" title="Modifier" onclick="openEdit(1)">✏️</button>
-        <button class="btn-icon danger" title="Supprimer" onclick="deleteProject(1)">🗑</button>
-      </div>
-    </div>
-  
-    <div class="admin-project-item">
-      <img class="admin-item-thumb" src="https://img.sanishtech.com/u/3477e3626e3cbd2a38401bf3225ee76b.png" alt="Workybara" onerror="this.innerHTML='🚀';this.style.display='flex'">
-      <div style="width:4px;height:40px;border-radius:4px;background:#227aec;flex-shrink:0"></div>
-      <div class="admin-item-info">
-        <div class="admin-item-name">Workybara</div>
-        <div class="admin-item-url">https://workybara.figma.site/</div>
-      </div>
-      <div class="admin-item-actions">
-        <button class="btn-icon" title="Modifier" onclick="openEdit(2)">✏️</button>
-        <button class="btn-icon danger" title="Supprimer" onclick="deleteProject(2)">🗑</button>
-      </div>
-    </div>
-  </div>
+    <div class="admin-project-list" id="admin-project-list"></div>
   </div>
 
   <!-- TAB: Ajouter -->
@@ -749,7 +700,7 @@
       <div class="section-title">Messages reçus</div>
       <button class="btn btn-outline" onclick="clearMessages()" style="font-size:.82rem">🗑 Tout effacer</button>
     </div>
-    <div class="messages-list" id="messages-list"><div class="empty-state"><div class="empty-icon">💬</div><p>Aucun message reçu pour l'instant</p></div></div>
+    <div class="messages-list" id="messages-list"></div>
   </div>
 
   <!-- TAB: Settings -->
@@ -781,7 +732,7 @@
           <strong>Étapes :</strong><br>
           1. Crée un compte sur <strong>emailjs.com</strong><br>
           2. Ajoute un service email (Gmail, Outlook…) → copie le <code>Service ID</code><br>
-          3. Crée un template avec les variables <code>{{from_name}}</code>, <code>{{from_email}}</code>, <code>{{message}}</code>, <code>{{to_email}}</code> → copie le <code>Template ID</code><br>
+          3. Crée un template avec les variables <code>&#123;&#123;from_name&#125;&#125;</code>, <code>&#123;&#123;from_email&#125;&#125;</code>, <code>&#123;&#123;message&#125;&#125;</code>, <code>&#123;&#123;to_email&#125;&#125;</code> → copie le <code>Template ID</code><br>
           4. Dans Account → API Keys → copie ta <code>Public Key</code><br>
           5. Colle les 3 valeurs ci-dessous et sauvegarde ✓
         </div>
@@ -810,32 +761,19 @@
       </div>
     </div>
   </div>
-
+</div>
 
 <script>
 // ════════════════ STATE ════════════════
 let state = {
-  password: "arthur",
-  email: "arthurretla@gmail.com",
-  emailjs: {"pubkey":"ff8_YW4oaNzobmNtT","service":"service_9ptexho","template":"template_y6q9z6i"},
+  password: 'admin',
+  email: 'arthur@exemple.com',
+  emailjs: { pubkey: '', service: '', template: '' },
   projects: [
-  {
-    "id": 1,
-    "name": "Livraison Fronton",
-    "url": "https://tomlivraison.figma.site/",
-    "img": "https://img.sanishtech.com/u/dcf9d58ff8b69525d6ce868e254f9b31.png",
-    "desc": "Appli de livraison style \"Uber\" dynamique et moderne pour des courses en ligne simples et efficaces",
-    "color": "#cc8b00"
-  },
-  {
-    "id": 2,
-    "name": "Workybara",
-    "url": "https://workybara.figma.site/",
-    "img": "https://img.sanishtech.com/u/3477e3626e3cbd2a38401bf3225ee76b.png",
-    "desc": "Une appli de révision éducative et pédagogique pour le brevet (En collaboration avec Lyam)",
-    "color": "#227aec"
-  }
-],
+    { id: 1, name: 'Portfolio V1', url: 'https://arthur.dev', img: '', desc: 'Mon premier portfolio personnel.', color: '#6366f1' },
+    { id: 2, name: 'Blog Tech', url: 'https://blog.arthur.dev', img: '', desc: 'Un blog sur les dernières tendances technologiques.', color: '#f472b6' },
+    { id: 3, name: 'App Todo', url: '', img: '', desc: 'Application de gestion de tâches minimaliste en React.', color: '#10b981' },
+  ],
   messages: [],
   loggedIn: false,
 };
@@ -1145,6 +1083,7 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ════════════════ INIT ════════════════
 // ════════════════ EXPORT HTML ════════════════
 function exportHTML() {
   // Get the full current HTML
@@ -1173,6 +1112,5 @@ function exportHTML() {
 load();
 renderProjects();
 </script>
-
-
-</body></html>
+</body>
+</html>
