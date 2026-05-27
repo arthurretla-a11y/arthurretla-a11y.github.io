@@ -1085,26 +1085,55 @@ function showToast(msg) {
 
 // ════════════════ EXPORT HTML ════════════════
 function exportHTML() {
-  // Get the full current HTML
-  const fullHTML = document.documentElement.outerHTML;
+  // Fetch the original source file (not the live DOM) to avoid capturing open panels
+  fetch(location.href)
+    .then(r => r.text())
+    .then(sourceHTML => {
+      const projectsJSON = JSON.stringify(state.projects, null, 2);
 
-  // Build the projects JS block to inject
-  const projectsJSON = JSON.stringify(state.projects, null, 2);
+      const exported = sourceHTML.replace(
+        /let state = \{[\s\S]*?projects: \[[\s\S]*?\],/,
+        `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},`
+      );
 
-  // Replace the default projects array in the source with current projects
-  // We inject a special marker so the replacement is reliable
-  const exported = fullHTML.replace(
-    /let state = \{[\s\S]*?projects: \[[\s\S]*?\],/,
-    `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},`
-  );
+      const blob = new Blob([exported], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('✅ index.html téléchargé ! Mets-le sur GitHub.');
+    })
+    .catch(() => {
+      // Fallback : capture DOM but force panels closed
+      document.getElementById('admin-panel').classList.remove('active');
+      document.getElementById('login-overlay').classList.remove('active');
+      document.getElementById('edit-overlay').classList.remove('active');
+      document.getElementById('legal-overlay').classList.remove('active');
 
-  const blob = new Blob([exported], { type: 'text/html;charset=utf-8' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'index.html';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  showToast('✅ index.html téléchargé ! Mets-le sur GitHub.');
+      const projectsJSON = JSON.stringify(state.projects, null, 2);
+      let html = document.documentElement.outerHTML;
+
+      html = html.replace(
+        /let state = \{[\s\S]*?projects: \[[\s\S]*?\],/,
+        `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},`
+      );
+
+      // Force loggedIn false and admin panel hidden in exported file
+      html = html.replace('loggedIn: true', 'loggedIn: false');
+      html = html.replace('id="admin-panel" class="active"', 'id="admin-panel"');
+
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      // Re-open admin after export
+      document.getElementById('admin-panel').classList.add('active');
+      showToast('✅ index.html téléchargé ! Mets-le sur GitHub.');
+    });
 }
 
 
