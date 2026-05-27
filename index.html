@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -636,7 +637,6 @@
 <div id="admin-panel">
   <div class="admin-header">
     <div class="admin-title">⚙️ Espace Admin</div>
-    <div style="display:flex;gap:10px">
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="exportHTML()" style="background:linear-gradient(135deg,#10b981,#06b6d4);box-shadow:0 4px 16px rgba(16,185,129,.3)">⬇️ Exporter index.html</button>
       <button class="btn btn-ghost" onclick="closeAdmin()">← Retour au site</button>
@@ -1083,7 +1083,6 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ════════════════ INIT ════════════════
 // ════════════════ EXPORT HTML ════════════════
 function exportHTML() {
   // Get the full current HTML
