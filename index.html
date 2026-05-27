@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arthur — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f8f8fc;
+    --grid-color: rgba(99,102,241,0.08);
+    --blue: #6366f1;
+    --blue-light: #818cf8;
+    --pink: #f472b6;
+    --pink-light: #fbcfe8;
+    --dark: #0f0f1a;
+    --card-bg: rgba(255,255,255,0.85);
+    --border: rgba(99,102,241,0.15);
+    --text: #1e1b4b;
+    --muted: #6b7280;
+    --shadow: 0 4px 32px rgba(99,102,241,0.10);
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    backdrop-filter: blur(12px);
+    background: rgba(248,248,252,0.85);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--blue), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-weight: 500; font-size: 0.9rem;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--blue); }
+
+  /* ─── HERO ─── */
+  .hero {
+    text-align: center;
+    padding: 96px 24px 64px;
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(244,114,182,0.12));
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--blue);
+    margin-bottom: 20px;
+    letter-spacing: 0.04em;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 18px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--blue), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    max-width: 480px; margin: 0 auto 36px;
+    color: var(--muted); font-size: 1.05rem; line-height: 1.7;
+  }
+  .hero-blobs {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; overflow: hidden; z-index: -1;
+  }
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.18;
+  }
+  .blob-1 { width: 400px; height: 400px; background: var(--blue); top: -100px; left: -80px; }
+  .blob-2 { width: 350px; height: 350px; background: var(--pink); top: 0; right: -60px; }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 26px; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; border: none; text-decoration: none;
+    transition: transform .18s, box-shadow .18s, filter .18s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue), var(--pink));
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(99,102,241,0.45); }
+  .btn-outline {
+    background: transparent; color: var(--blue);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .btn-outline:hover { background: rgba(99,102,241,0.06); transform: translateY(-2px); }
+  .btn-ghost {
+    background: rgba(255,255,255,0.7); color: var(--text);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.95); }
+
+  /* ─── PROJECTS GRID ─── */
+  #projets { padding: 64px 48px; }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .section-sub { color: var(--muted); margin-bottom: 40px; font-size: 0.95rem; }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .project-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform .22s, box-shadow .22s;
+    backdrop-filter: blur(8px);
+    position: relative;
+  }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 12px 48px rgba(99,102,241,0.18); }
+
+  .card-color-bar { height: 5px; width: 100%; }
+
+  .card-thumb {
+    width: 100%; height: 180px; object-fit: cover;
+    display: block;
+    background: linear-gradient(135deg, #e0e7ff, #fce7f3);
+  }
+  .card-thumb-placeholder {
+    width: 100%; height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #e0e7ff, #fce7f3);
+  }
+
+  .card-body { padding: 20px 22px 22px; }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .card-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-bottom: 16px; }
+  .card-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.84rem; font-weight: 500;
+    color: var(--blue); text-decoration: none;
+    transition: gap .2s;
+  }
+  .card-link:hover { gap: 10px; }
+
+  /* ─── CONTACT ─── */
+  #contact { padding: 64px 48px; }
+  .contact-box {
+    max-width: 540px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    backdrop-filter: blur(8px);
+  }
+  .contact-box h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.5rem; margin-bottom: 6px; }
+  .contact-box p { color: var(--muted); font-size: 0.9rem; margin-bottom: 28px; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field textarea {
+    width: 100%; padding: 12px 16px;
+    border: 1.5px solid var(--border); border-radius: 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    background: rgba(255,255,255,0.8); color: var(--text);
+    outline: none; transition: border-color .2s, box-shadow .2s;
+    resize: vertical;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; right: 32px;
+    background: linear-gradient(135deg, var(--blue), var(--pink));
+    color: #fff; padding: 14px 22px;
+    border-radius: 14px; font-size: 0.9rem; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(99,102,241,0.35);
+    opacity: 0; transform: translateY(16px);
+    transition: opacity .3s, transform .3s;
+    pointer-events: none; z-index: 9999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 32px;
+    color: var(--muted); font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── OVERLAY / MODAL ─── */
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,15,26,0.65); backdrop-filter: blur(8px);
+    z-index: 1000; align-items: center; justify-content: center;
+  }
+  .overlay.active { display: flex; }
+
+  .modal {
+    background: rgba(248,248,252,0.97);
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(99,102,241,0.25);
+    padding: 48px 40px;
+    width: 100%; max-width: 440px;
+    position: relative;
+    animation: modalIn .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes modalIn {
+    from { opacity:0; transform: scale(.92) translateY(16px); }
+    to   { opacity:1; transform: scale(1) translateY(0); }
+  }
+  .modal-close {
+    position: absolute; top: 18px; right: 18px;
+    background: transparent; border: none; cursor: pointer;
+    font-size: 1.2rem; color: var(--muted); line-height: 1;
+    transition: color .2s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-icon { font-size: 2.8rem; text-align: center; margin-bottom: 16px; }
+  .modal h2 {
+    font-family: 'Syne', sans-serif;
+    text-align: center; font-size: 1.6rem; font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .modal .modal-sub { text-align: center; color: var(--muted); font-size: 0.88rem; margin-bottom: 28px; }
+  .modal .field label { color: var(--muted); }
+  .modal-hint { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 16px; }
+  .modal-hint strong { color: var(--text); }
+  .modal-error { color: #ef4444; font-size: 0.82rem; margin-top: 8px; text-align: center; display: none; }
+
+  /* ─── ADMIN PANEL ─── */
+  #admin-panel {
+    display: none; position: fixed; inset: 0;
+    background: var(--bg);
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 500; overflow-y: auto;
+  }
+  #admin-panel.active { display: block; }
+
+  .admin-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(248,248,252,0.9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .admin-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; }
+
+  .admin-tabs {
+    display: flex; gap: 6px;
+    padding: 28px 48px 0;
+  }
+  .tab-btn {
+    padding: 10px 22px; border-radius: 999px;
+    background: transparent; border: 1.5px solid var(--border);
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+    color: var(--muted); cursor: pointer;
+    transition: all .2s;
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--blue), var(--pink));
+    border-color: transparent; color: #fff;
+    box-shadow: 0 4px 16px rgba(99,102,241,0.3);
+  }
+
+  .tab-content { display: none; padding: 32px 48px; }
+  .tab-content.active { display: block; }
+
+  /* Admin project form */
+  .admin-form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    max-width: 720px;
+  }
+  .admin-form-grid .full { grid-column: 1/-1; }
+
+  .color-preview {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .color-preview input[type=color] {
+    width: 48px; height: 48px; border: none;
+    border-radius: 12px; cursor: pointer; padding: 4px;
+    background: transparent;
+  }
+  .color-swatch {
+    flex:1; height: 48px; border-radius: 12px;
+    border: 1.5px solid var(--border);
+    transition: background .2s;
+  }
+
+  /* Admin project list */
+  .admin-project-list { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
+  .admin-project-item {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 14px 18px;
+    backdrop-filter: blur(8px);
+    transition: box-shadow .2s;
+  }
+  .admin-project-item:hover { box-shadow: var(--shadow); }
+  .admin-item-thumb {
+    width: 52px; height: 52px; border-radius: 10px; object-fit: cover;
+    background: linear-gradient(135deg, #e0e7ff, #fce7f3);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+  }
+  .admin-item-info { flex: 1; min-width: 0; }
+  .admin-item-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-item-url { color: var(--muted); font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-item-actions { display: flex; gap: 8px; }
+  .btn-icon {
+    width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid var(--border);
+    background: transparent; cursor: pointer; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+  }
+  .btn-icon:hover { background: rgba(99,102,241,0.08); }
+  .btn-icon.danger:hover { background: rgba(239,68,68,0.08); border-color: #ef4444; }
+
+  /* Messages dashboard */
+  .messages-list { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
+  .message-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 20px 22px;
+    backdrop-filter: blur(8px);
+  }
+  .message-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .message-from { font-weight: 600; font-size: 0.95rem; }
+  .message-time { font-size: 0.78rem; color: var(--muted); }
+  .message-email { font-size: 0.82rem; color: var(--blue); margin-bottom: 10px; }
+  .message-text { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+  .message-unread { border-left: 3px solid var(--blue); }
+
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    color: var(--muted);
+  }
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+  /* Settings */
+  .settings-section { max-width: 480px; }
+  .settings-section h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem;
+    margin-bottom: 18px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    padding: 20px 48px 0;
+  }
+  .stat-chip {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 14px 20px;
+    backdrop-filter: blur(8px);
+    flex: 1; min-width: 140px;
+  }
+  .stat-icon { font-size: 1.5rem; }
+  .stat-val { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1; }
+  .stat-lbl { font-size: 0.78rem; color: var(--muted); }
+
+  /* Secret input tracker */
+  #secret-input { position: fixed; opacity: 0; pointer-events: none; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Edit modal */
+  .edit-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .edit-form-grid .full { grid-column: 1/-1; }
+
+  @media (max-width: 700px) {
+    header, #projets, #contact, .admin-header, .tab-content, .stats-bar, .admin-tabs { padding-left: 20px; padding-right: 20px; }
+    .admin-form-grid, .edit-form-grid { grid-template-columns: 1fr; }
+    .admin-form-grid .full, .edit-form-grid .full { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Secret input tracker -->
+<input id="secret-input" type="text" autocomplete="off">
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════ PUBLIC SITE ══════════ -->
+<div id="public-site">
+  <header>
+    <div class="logo">Arthur.</div>
+    <nav class="nav-links">
+      <a href="#projets">Projets</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-blobs">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+    </div>
+    <div class="hero-badge">✦ Portfolio & Projets</div>
+    <h1>Bonjour, je suis<br><span>Arthur</span></h1>
+    <p>Découvrez mes projets, créations et sites web. Chaque réalisation est une aventure unique.</p>
+    <a href="#projets" class="btn btn-primary">Voir mes projets ↓</a>
+  </section>
+
+  <section id="projets">
+    <div class="section-title">Mes Projets</div>
+    <div class="section-sub" id="proj-count">Chargement...</div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </section>
+
+  <section id="contact">
+    <div class="section-title">Me Contacter</div>
+    <div class="section-sub">Une question, une idée, une collaboration ? Écrivez-moi.</div>
+    <div class="contact-box">
+      <h2>Envoyez un message 💬</h2>
+      <p>Je vous répondrai dès que possible.</p>
+      <div class="field">
+        <label>Votre nom</label>
+        <input type="text" id="c-name" placeholder="Jean Dupont">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="c-email" placeholder="jean@exemple.com">
+      </div>
+      <div class="field">
+        <label>Message</label>
+        <textarea id="c-msg" rows="4" placeholder="Bonjour Arthur..."></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="sendContact()">Envoyer le message →</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Arthur — Fait avec ❤️</p>
+  </footer>
+</div>
+
+<!-- ══════════ LOGIN MODAL ══════════ -->
+<div class="overlay" id="login-overlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="modal-icon">🔐</div>
+    <h2>Espace Admin</h2>
+    <div class="modal-sub">Connectez-vous pour gérer votre portfolio</div>
+    <div class="field">
+      <label>Mot de passe</label>
+      <input type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')tryLogin()">
+    </div>
+    <div class="modal-error" id="login-err">❌ Mot de passe incorrect</div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="tryLogin()">Se connecter</button>
+    <div class="modal-hint">Démo : mot de passe = <strong>admin</strong></div>
+  </div>
+</div>
+
+<!-- ══════════ EDIT PROJECT MODAL ══════════ -->
+<div class="overlay" id="edit-overlay">
+  <div class="modal" style="max-width:520px">
+    <button class="modal-close" onclick="closeEdit()">✕</button>
+    <h2 style="margin-bottom:6px">Modifier le projet</h2>
+    <p style="color:var(--muted);font-size:.88rem;margin-bottom:24px">Mettez à jour les informations</p>
+    <div class="edit-form-grid">
+      <div class="field">
+        <label>Nom du projet</label>
+        <input type="text" id="e-name">
+      </div>
+      <div class="field">
+        <label>URL</label>
+        <input type="text" id="e-url">
+      </div>
+      <div class="field full">
+        <label>Image (URL)</label>
+        <input type="text" id="e-img">
+      </div>
+      <div class="field full">
+        <label>Description</label>
+        <textarea id="e-desc" rows="3"></textarea>
+      </div>
+      <div class="field full">
+        <label>Couleur du cadre</label>
+        <div class="color-preview">
+          <input type="color" id="e-color" value="#6366f1" oninput="document.getElementById('e-swatch').style.background=this.value">
+          <div class="color-swatch" id="e-swatch" style="background:#6366f1"></div>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:20px" onclick="saveEdit()">Enregistrer les modifications</button>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN PANEL ══════════ -->
+<div id="admin-panel">
+  <div class="admin-header">
+    <div class="admin-title">⚙️ Espace Admin</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-ghost" onclick="closeAdmin()">← Retour au site</button>
+      <button class="btn btn-outline" onclick="logout()" style="color:#ef4444;border-color:rgba(239,68,68,.3)">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="stats-bar" id="stats-bar"></div>
+
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="switchTab('projets')">🗂 Projets</button>
+    <button class="tab-btn" onclick="switchTab('ajouter')">➕ Ajouter</button>
+    <button class="tab-btn" onclick="switchTab('messages')">💬 Messages</button>
+    <button class="tab-btn" onclick="switchTab('settings')">⚙️ Paramètres</button>
+  </div>
+
+  <!-- TAB: Projets list -->
+  <div class="tab-content active" id="tab-projets">
+    <div class="section-title" style="margin-bottom:20px">Mes projets</div>
+    <div class="admin-project-list" id="admin-project-list"></div>
+  </div>
+
+  <!-- TAB: Ajouter -->
+  <div class="tab-content" id="tab-ajouter">
+    <div class="section-title" style="margin-bottom:6px">Ajouter un projet</div>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:28px">Remplissez les informations du nouveau projet ou site</p>
+    <div class="admin-form-grid">
+      <div class="field">
+        <label>Nom du projet *</label>
+        <input type="text" id="a-name" placeholder="Mon super projet">
+      </div>
+      <div class="field">
+        <label>URL</label>
+        <input type="text" id="a-url" placeholder="https://monsite.com">
+      </div>
+      <div class="field full">
+        <label>Image (URL)</label>
+        <input type="text" id="a-img" placeholder="https://... ou laisser vide">
+      </div>
+      <div class="field full">
+        <label>Description</label>
+        <textarea id="a-desc" rows="3" placeholder="Décrivez votre projet en quelques mots..."></textarea>
+      </div>
+      <div class="field full">
+        <label>Couleur du cadre</label>
+        <div class="color-preview">
+          <input type="color" id="a-color" value="#6366f1" oninput="document.getElementById('a-swatch').style.background=this.value">
+          <div class="color-swatch" id="a-swatch" style="background:#6366f1"></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:12px">
+      <button class="btn btn-primary" onclick="addProject()">Ajouter le projet ✓</button>
+      <button class="btn btn-ghost" onclick="clearAddForm()">Effacer</button>
+    </div>
+  </div>
+
+  <!-- TAB: Messages -->
+  <div class="tab-content" id="tab-messages">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+      <div class="section-title">Messages reçus</div>
+      <button class="btn btn-outline" onclick="clearMessages()" style="font-size:.82rem">🗑 Tout effacer</button>
+    </div>
+    <div class="messages-list" id="messages-list"></div>
+  </div>
+
+  <!-- TAB: Settings -->
+  <div class="tab-content" id="tab-settings">
+    <div class="section-title" style="margin-bottom:28px">Paramètres</div>
+    <div style="display:flex;flex-direction:column;gap:36px;max-width:480px">
+      <div class="settings-section">
+        <h3>🔑 Mot de passe admin</h3>
+        <div class="field">
+          <label>Ancien mot de passe</label>
+          <input type="password" id="s-old" placeholder="••••••••">
+        </div>
+        <div class="field">
+          <label>Nouveau mot de passe</label>
+          <input type="password" id="s-new" placeholder="••••••••">
+        </div>
+        <div class="field">
+          <label>Confirmer le nouveau mot de passe</label>
+          <input type="password" id="s-confirm" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" onclick="changePassword()">Mettre à jour le mot de passe</button>
+      </div>
+
+      <div class="settings-section">
+        <h3>📧 Email de contact</h3>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">Les messages du formulaire de contact seront affichés dans le dashboard Messages.</p>
+        <div class="field">
+          <label>Email de réception</label>
+          <input type="email" id="s-email" placeholder="votre@email.com">
+        </div>
+        <button class="btn btn-primary" onclick="saveEmail()">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════ STATE ════════════════
+let state = {
+  password: 'admin',
+  email: 'arthur@exemple.com',
+  projects: [
+    { id: 1, name: 'Portfolio V1', url: 'https://arthur.dev', img: '', desc: 'Mon premier portfolio personnel.', color: '#6366f1' },
+    { id: 2, name: 'Blog Tech', url: 'https://blog.arthur.dev', img: '', desc: 'Un blog sur les dernières tendances technologiques.', color: '#f472b6' },
+    { id: 3, name: 'App Todo', url: '', img: '', desc: 'Application de gestion de tâches minimaliste en React.', color: '#10b981' },
+  ],
+  messages: [],
+  loggedIn: false,
+};
+let secretBuffer = '';
+let editingId = null;
+
+// ════════════════ PERSISTENCE ════════════════
+function save() { try { localStorage.setItem('arthur_portfolio', JSON.stringify(state)); } catch(e){} }
+function load() {
+  try {
+    const d = localStorage.getItem('arthur_portfolio');
+    if (d) state = { ...state, ...JSON.parse(d) };
+  } catch(e) {}
+}
+
+// ════════════════ SECRET WORD ════════════════
+document.addEventListener('keydown', e => {
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
+  if (e.key.length === 1) {
+    secretBuffer += e.key.toLowerCase();
+    if (secretBuffer.length > 10) secretBuffer = secretBuffer.slice(-10);
+    if (secretBuffer.includes('arthur')) {
+      secretBuffer = '';
+      openLogin();
+    }
+  }
+});
+
+// ════════════════ LOGIN ════════════════
+function openLogin() {
+  if (state.loggedIn) { openAdmin(); return; }
+  document.getElementById('login-overlay').classList.add('active');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-err').style.display = 'none';
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+function closeLogin() { document.getElementById('login-overlay').classList.remove('active'); }
+function tryLogin() {
+  const val = document.getElementById('pw-input').value;
+  if (val === state.password) {
+    state.loggedIn = true;
+    closeLogin();
+    openAdmin();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+function logout() {
+  state.loggedIn = false;
+  closeAdmin();
+  showToast('Déconnecté avec succès');
+}
+
+// ════════════════ ADMIN ════════════════
+function openAdmin() {
+  document.getElementById('admin-panel').classList.add('active');
+  renderAdminProjects();
+  renderMessages();
+  renderStats();
+  document.getElementById('s-email').value = state.email;
+}
+function closeAdmin() {
+  document.getElementById('admin-panel').classList.remove('active');
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    const names = ['projets','ajouter','messages','settings'];
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if (name === 'messages') renderMessages();
+}
+
+function renderStats() {
+  const unread = state.messages.filter(m => m.unread).length;
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat-chip"><div class="stat-icon">🗂</div><div><div class="stat-val">${state.projects.length}</div><div class="stat-lbl">Projets</div></div></div>
+    <div class="stat-chip"><div class="stat-icon">💬</div><div><div class="stat-val">${state.messages.length}</div><div class="stat-lbl">Messages</div></div></div>
+    <div class="stat-chip"><div class="stat-icon">🔔</div><div><div class="stat-val">${unread}</div><div class="stat-lbl">Non lus</div></div></div>
+    <div class="stat-chip"><div class="stat-icon">📧</div><div><div class="stat-val" style="font-size:.9rem">${state.email}</div><div class="stat-lbl">Email contact</div></div></div>
+  `;
+}
+
+// ════════════════ PROJECTS ════════════════
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  const count = document.getElementById('proj-count');
+  count.textContent = state.projects.length + ' projet' + (state.projects.length>1?'s':'') + ' en ligne';
+  if (!state.projects.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><p>Aucun projet pour l\'instant</p></div>';
+    return;
+  }
+  grid.innerHTML = state.projects.map(p => `
+    <div class="project-card">
+      <div class="card-color-bar" style="background:${p.color}"></div>
+      ${p.img ? `<img class="card-thumb" src="${p.img}" alt="${p.name}" onerror="this.style.display='none'">` : `<div class="card-thumb-placeholder">🚀</div>`}
+      <div class="card-body">
+        <div class="card-title">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        ${p.url ? `<a class="card-link" href="${p.url}" target="_blank">Voir le projet →</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAdminProjects() {
+  const list = document.getElementById('admin-project-list');
+  if (!state.projects.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><p>Aucun projet. Utilisez l\'onglet "Ajouter".</p></div>';
+    return;
+  }
+  list.innerHTML = state.projects.map(p => `
+    <div class="admin-project-item">
+      ${p.img
+        ? `<img class="admin-item-thumb" src="${p.img}" alt="${p.name}" onerror="this.innerHTML='🚀';this.style.display='flex'">`
+        : `<div class="admin-item-thumb">🚀</div>`}
+      <div style="width:4px;height:40px;border-radius:4px;background:${p.color};flex-shrink:0"></div>
+      <div class="admin-item-info">
+        <div class="admin-item-name">${p.name}</div>
+        <div class="admin-item-url">${p.url || 'Pas d\'URL'}</div>
+      </div>
+      <div class="admin-item-actions">
+        <button class="btn-icon" title="Modifier" onclick="openEdit(${p.id})">✏️</button>
+        <button class="btn-icon danger" title="Supprimer" onclick="deleteProject(${p.id})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addProject() {
+  const name = document.getElementById('a-name').value.trim();
+  if (!name) { showToast('⚠️ Le nom est requis'); return; }
+  const proj = {
+    id: Date.now(),
+    name,
+    url: document.getElementById('a-url').value.trim(),
+    img: document.getElementById('a-img').value.trim(),
+    desc: document.getElementById('a-desc').value.trim(),
+    color: document.getElementById('a-color').value,
+  };
+  state.projects.push(proj);
+  save(); renderProjects(); renderAdminProjects(); renderStats();
+  clearAddForm();
+  showToast('✅ Projet ajouté !');
+  switchTab('projets');
+}
+
+function clearAddForm() {
+  ['a-name','a-url','a-img','a-desc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('a-color').value = '#6366f1';
+  document.getElementById('a-swatch').style.background = '#6366f1';
+}
+
+function deleteProject(id) {
+  if (!confirm('Supprimer ce projet ?')) return;
+  state.projects = state.projects.filter(p => p.id !== id);
+  save(); renderProjects(); renderAdminProjects(); renderStats();
+  showToast('🗑 Projet supprimé');
+}
+
+function openEdit(id) {
+  editingId = id;
+  const p = state.projects.find(p => p.id === id);
+  if (!p) return;
+  document.getElementById('e-name').value = p.name;
+  document.getElementById('e-url').value = p.url;
+  document.getElementById('e-img').value = p.img;
+  document.getElementById('e-desc').value = p.desc;
+  document.getElementById('e-color').value = p.color;
+  document.getElementById('e-swatch').style.background = p.color;
+  document.getElementById('edit-overlay').classList.add('active');
+}
+function closeEdit() { document.getElementById('edit-overlay').classList.remove('active'); editingId = null; }
+function saveEdit() {
+  const p = state.projects.find(p => p.id === editingId);
+  if (!p) return;
+  p.name = document.getElementById('e-name').value.trim() || p.name;
+  p.url = document.getElementById('e-url').value.trim();
+  p.img = document.getElementById('e-img').value.trim();
+  p.desc = document.getElementById('e-desc').value.trim();
+  p.color = document.getElementById('e-color').value;
+  save(); renderProjects(); renderAdminProjects();
+  closeEdit();
+  showToast('✅ Projet modifié !');
+}
+
+// ════════════════ CONTACT ════════════════
+function sendContact() {
+  const name = document.getElementById('c-name').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const msg = document.getElementById('c-msg').value.trim();
+  if (!name || !email || !msg) { showToast('⚠️ Remplissez tous les champs'); return; }
+  state.messages.unshift({ id: Date.now(), name, email, msg, time: new Date().toLocaleString('fr-FR'), unread: true });
+  save();
+  document.getElementById('c-name').value = '';
+  document.getElementById('c-email').value = '';
+  document.getElementById('c-msg').value = '';
+  showToast('✉️ Message envoyé ! Merci ' + name);
+}
+
+// ════════════════ MESSAGES ════════════════
+function renderMessages() {
+  const list = document.getElementById('messages-list');
+  if (!state.messages.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>Aucun message reçu pour l\'instant</p></div>';
+    return;
+  }
+  list.innerHTML = state.messages.map(m => `
+    <div class="message-card ${m.unread?'message-unread':''}" onclick="markRead(${m.id})">
+      <div class="message-meta">
+        <div class="message-from">${m.name} ${m.unread?'<span style="color:var(--blue);font-size:.75rem;margin-left:6px">● Nouveau</span>':''}</div>
+        <div class="message-time">${m.time}</div>
+      </div>
+      <div class="message-email">📧 ${m.email}</div>
+      <div class="message-text">${m.msg}</div>
+    </div>
+  `).join('');
+  // mark all read after viewing
+  setTimeout(() => {
+    state.messages.forEach(m => m.unread = false);
+    save(); renderStats();
+  }, 2000);
+}
+
+function markRead(id) {
+  const m = state.messages.find(m => m.id === id);
+  if (m) { m.unread = false; save(); renderMessages(); renderStats(); }
+}
+
+function clearMessages() {
+  if (!confirm('Effacer tous les messages ?')) return;
+  state.messages = [];
+  save(); renderMessages(); renderStats();
+  showToast('🗑 Messages effacés');
+}
+
+// ════════════════ SETTINGS ════════════════
+function changePassword() {
+  const old = document.getElementById('s-old').value;
+  const nw = document.getElementById('s-new').value;
+  const cf = document.getElementById('s-confirm').value;
+  if (old !== state.password) { showToast('❌ Ancien mot de passe incorrect'); return; }
+  if (!nw) { showToast('⚠️ Nouveau mot de passe vide'); return; }
+  if (nw !== cf) { showToast('❌ Les mots de passe ne correspondent pas'); return; }
+  state.password = nw;
+  save();
+  document.getElementById('s-old').value = '';
+  document.getElementById('s-new').value = '';
+  document.getElementById('s-confirm').value = '';
+  showToast('✅ Mot de passe mis à jour !');
+}
+
+function saveEmail() {
+  const email = document.getElementById('s-email').value.trim();
+  if (!email) { showToast('⚠️ Email vide'); return; }
+  state.email = email;
+  save(); renderStats();
+  showToast('✅ Email sauvegardé !');
+}
+
+// ════════════════ TOAST ════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ════════════════ INIT ════════════════
+load();
+renderProjects();
+</script>
+</body>
+</html>
