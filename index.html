@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -38,10 +37,90 @@
     min-height: 100vh;
   }
 
+  /* ─── LAYOUT WITH SIDEBAR ─── */
+  #public-site {
+    margin-left: 56px;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0;
+    width: 56px; transition: width .3s cubic-bezier(.22,1,.36,1);
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px 0;
+    z-index: 200;
+    transition: width .3s cubic-bezier(.22,1,.36,1);
+    overflow: hidden;
+  }
+
+  .sidebar-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem;
+    background: linear-gradient(135deg, var(--blue), var(--pink));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    white-space: nowrap; margin-bottom: 32px;
+    width: 100%; padding: 0 20px; overflow: hidden;
+  }
+  .sidebar:hover { width: 180px; }
+  .sidebar-logo .sb-text { opacity: 0; transition: opacity .2s; }
+  .sidebar:hover .sidebar-logo .sb-text { opacity: 1; }
+  .sidebar-nav { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 4px; padding: 0 10px; }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 14px;
+    padding: 11px 11px; border-radius: 12px;
+    text-decoration: none; color: var(--muted);
+    font-size: .88rem; font-weight: 500;
+    transition: background .18s, color .18s;
+    white-space: nowrap; overflow: hidden;
+    cursor: pointer; border: none; background: transparent;
+    font-family: 'DM Sans', sans-serif; width: 100%;
+  }
+  .sidebar-link:hover { background: rgba(99,102,241,.08); color: var(--blue); }
+  .sidebar-link.active { background: linear-gradient(135deg,rgba(99,102,241,.12),rgba(244,114,182,.12)); color: var(--blue); }
+  .sidebar-icon { font-size: 1.15rem; flex-shrink: 0; width: 24px; text-align: center; }
+  .sidebar-label { opacity: 0; transition: opacity .15s; white-space: nowrap; }
+  .sidebar:hover .sidebar-label { opacity: 1; }
+  .sidebar-bottom { width: 100%; padding: 0 10px 8px; display: flex; flex-direction: column; gap: 4px; }
+  .sidebar-divider { width: calc(100% - 20px); height: 1px; background: var(--border); margin: 8px 10px; }
+
+  /* ─── STATUS BADGE ─── */
+  .status-widget {
+    position: fixed; top: 18px; right: 24px; z-index: 150;
+    display: flex; align-items: center; gap: 9px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(12px);
+    border: 1.5px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 16px 8px 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow .2s, transform .2s;
+    animation: fadeUp .6s cubic-bezier(.22,1,.36,1) .3s both;
+  }
+  .status-widget:hover { box-shadow: 0 8px 32px rgba(99,102,241,.18); transform: translateY(-1px); }
+  .status-dot {
+    width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; position: relative;
+  }
+  .status-dot::after {
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
+    opacity: .35; animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { transform: scale(1); opacity: .35; }
+    50%      { transform: scale(1.7); opacity: 0; }
+  }
+  .status-dot.green  { background: #22c55e; } .status-dot.green::after  { background: #22c55e; }
+  .status-dot.orange { background: #f97316; } .status-dot.orange::after { background: #f97316; }
+  .status-dot.red    { background: #ef4444; } .status-dot.red::after    { background: #ef4444; }
+  .status-dot.blue   { background: var(--blue); } .status-dot.blue::after { background: var(--blue); }
+  .status-dot.grey   { background: #9ca3af; } .status-dot.grey::after   { background: #9ca3af; }
+  .status-label { font-size: .75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text); white-space: nowrap; }
+
   /* ─── HEADER ─── */
   header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 48px;
+    padding: 20px 40px 20px 28px;
     backdrop-filter: blur(12px);
     background: rgba(248,248,252,0.85);
     border-bottom: 1px solid var(--border);
@@ -486,6 +565,43 @@
     .admin-form-grid, .edit-form-grid { grid-template-columns: 1fr; }
     .admin-form-grid .full, .edit-form-grid .full { grid-column: 1; }
   }
+
+  /* ─── MOBILE ─── */
+  .sidebar-toggle {
+    display: none;
+    position: fixed; top: 16px; left: 16px; z-index: 300;
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+    border: 1.5px solid var(--border); box-shadow: var(--shadow);
+    cursor: pointer; font-size: 1.1rem;
+    align-items: center; justify-content: center;
+  }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(15,15,26,0.4); backdrop-filter: blur(4px);
+    z-index: 199;
+  }
+  .sidebar-overlay.active { display: block; }
+
+  @media (max-width: 700px) {
+    #public-site { margin-left: 0 !important; }
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform .3s cubic-bezier(.22,1,.36,1);
+      width: 200px !important;
+      z-index: 250;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-toggle { display: flex; }
+    .status-widget { top: 14px; right: 14px; }
+    header { padding: 16px 16px 16px 68px !important; }
+    #projets, #contact { padding-left: 20px !important; padding-right: 20px !important; }
+    .hero { padding: 72px 20px 48px !important; }
+    .projects-grid { grid-template-columns: 1fr !important; }
+    .admin-header, .tab-content, .stats-bar, .admin-tabs { padding-left: 16px !important; padding-right: 16px !important; }
+    .modal { padding: 32px 24px !important; }
+    .stats-bar { flex-direction: column; }
+  }
 </style>
 </head>
 <body>
@@ -497,13 +613,37 @@
 <div class="toast" id="toast"></div>
 
 <!-- ══════════ PUBLIC SITE ══════════ -->
+<!-- Mobile sidebar toggle -->
+<button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">A<span class="sb-text">rthur.</span></div>
+  <div class="sidebar-nav">
+    <a class="sidebar-link active" href="#" onclick="scrollToTop(event)">
+      <span class="sidebar-label" >Accueil</span>
+    </a>
+    <a class="sidebar-link" href="#projets" onclick="setSidebarActive(this)">
+      <span class="sidebar-label" >Projets</span>
+    </a>
+    <a class="sidebar-link" href="#contact" onclick="setSidebarActive(this)">
+      <span class="sidebar-label" >Contact</span>
+    </a>
+  </div>
+
+</nav>
+
+<!-- ══════════ STATUS BADGE ══════════ -->
+<div class="status-widget" id="status-widget">
+  <div class="status-dot green" id="status-dot"></div>
+  <span class="status-label" id="status-label">Disponible</span>
+</div>
+
 <div id="public-site">
   <header>
     <div class="logo">Arthur.</div>
-    <nav class="nav-links">
-      <a href="#projets">Projets</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div style="width:1px"></div>
   </header>
 
   <section class="hero">
@@ -708,6 +848,30 @@
   <div class="tab-content" id="tab-settings">
     <div class="section-title" style="margin-bottom:28px">Paramètres</div>
     <div style="display:flex;flex-direction:column;gap:36px;max-width:480px">
+
+      <div class="settings-section">
+        <h3>🟢 Badge de statut</h3>
+        <p style="color:var(--muted);font-size:.85rem;margin-bottom:16px">Affiché en haut à droite du site pour indiquer ta disponibilité.</p>
+        <div class="field">
+          <label>Texte du statut</label>
+          <input type="text" id="s-status-text" placeholder="Ex: Disponible, En mission, Occupé...">
+        </div>
+        <div class="field">
+          <label>Couleur du point</label>
+          <select id="s-status-color" style="width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-size:.9rem;background:rgba(255,255,255,.8);color:var(--text);outline:none;">
+            <option value="green">🟢 Vert — Disponible</option>
+            <option value="orange">🟠 Orange — En mission</option>
+            <option value="blue">🔵 Bleu — En projet</option>
+            <option value="red">🔴 Rouge — Indisponible</option>
+            <option value="grey">⚪ Gris — Invisible</option>
+          </select>
+        </div>
+        <div class="field" style="display:flex;align-items:center;gap:12px">
+          <input type="checkbox" id="s-status-visible" style="width:18px;height:18px;accent-color:var(--blue);cursor:pointer">
+          <label for="s-status-visible" style="margin:0;cursor:pointer;font-size:.9rem;color:var(--text)">Afficher le badge sur le site</label>
+        </div>
+        <button class="btn btn-primary" onclick="saveStatus()" style="margin-top:8px">Sauvegarder le statut</button>
+      </div>
       <div class="settings-section">
         <h3>🔑 Mot de passe admin</h3>
         <div class="field">
@@ -767,29 +931,17 @@
 <script>
 // ════════════════ STATE ════════════════
 let state = {
-  password: "arthur",
-  email: "arthurretla@gmail.com",
-  emailjs: {"pubkey":"ff8_YW4oaNzobmNtT","service":"service_9ptexho","template":"template_y6q9z6i"},
+  password: 'admin',
+  email: 'arthur@exemple.com',
+  emailjs: { pubkey: '', service: '', template: '' },
   projects: [
-  {
-    "id": 1,
-    "name": "Livraison Fronton",
-    "url": "https://tomlivraison.figma.site/",
-    "img": "https://img.sanishtech.com/u/dcf9d58ff8b69525d6ce868e254f9b31.png",
-    "desc": "Appli de livraison style \"Uber\" dynamique et moderne pour des courses en ligne simples et efficaces",
-    "color": "#cc8b00"
-  },
-  {
-    "id": 2,
-    "name": "Workybara",
-    "url": "https://workybara.figma.site/",
-    "img": "https://img.sanishtech.com/u/3477e3626e3cbd2a38401bf3225ee76b.png",
-    "desc": "Une appli de révision éducative et pédagogique pour le brevet (En collaboration avec Lyam)",
-    "color": "#227aec"
-  }
-],
+    { id: 1, name: 'Portfolio V1', url: 'https://arthur.dev', img: '', desc: 'Mon premier portfolio personnel.', color: '#6366f1' },
+    { id: 2, name: 'Blog Tech', url: 'https://blog.arthur.dev', img: '', desc: 'Un blog sur les dernières tendances technologiques.', color: '#f472b6' },
+    { id: 3, name: 'App Todo', url: '', img: '', desc: 'Application de gestion de tâches minimaliste en React.', color: '#10b981' },
+  ],
   messages: [],
   loggedIn: false,
+  status: { text: 'Disponible', color: 'green', visible: true },
 };
 let secretBuffer = '';
 let editingId = null;
@@ -801,6 +953,36 @@ function load() {
     const d = localStorage.getItem('arthur_portfolio');
     if (d) state = { ...state, ...JSON.parse(d) };
   } catch(e) {}
+}
+
+
+// ════════════════ STATUS ════════════════
+function renderStatus() {
+  const s = state.status || { text: 'Disponible', color: 'green', visible: true };
+  const widget = document.getElementById('status-widget');
+  const dot    = document.getElementById('status-dot');
+  const label  = document.getElementById('status-label');
+  if (!widget) return;
+  widget.style.display = s.visible ? 'flex' : 'none';
+  dot.className = 'status-dot ' + s.color;
+  label.textContent = s.text;
+}
+
+function saveStatus() {
+  state.status = {
+    text:    document.getElementById('s-status-text').value.trim() || 'Disponible',
+    color:   document.getElementById('s-status-color').value,
+    visible: document.getElementById('s-status-visible').checked,
+  };
+  save(); renderStatus();
+  showToast('✅ Statut mis à jour !');
+}
+
+function loadStatusForm() {
+  const s = state.status || { text: 'Disponible', color: 'green', visible: true };
+  document.getElementById('s-status-text').value = s.text;
+  document.getElementById('s-status-color').value = s.color;
+  document.getElementById('s-status-visible').checked = s.visible !== false;
 }
 
 // ════════════════ LEGAL ════════════════
@@ -819,6 +1001,33 @@ document.addEventListener('keydown', e => {
     }
   }
 });
+
+
+
+// ════════════════ MOBILE SIDEBAR ════════════════
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('active');
+}
+
+// ════════════════ SIDEBAR ════════════════
+function setSidebarActive(el) {
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  closeSidebar();
+}
+function scrollToTop(e) {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setSidebarActive(e.currentTarget);
+  closeSidebar();
+}
 
 // ════════════════ LOGIN ════════════════
 function openLogin() {
@@ -857,6 +1066,7 @@ function openAdmin() {
   document.getElementById('s-ejs-pubkey').value = state.emailjs.pubkey || '';
   document.getElementById('s-ejs-service').value = state.emailjs.service || '';
   document.getElementById('s-ejs-template').value = state.emailjs.template || '';
+  loadStatusForm();
 }
 function closeAdmin() {
   document.getElementById('admin-panel').classList.remove('active');
@@ -1107,7 +1317,7 @@ function exportHTML() {
 
       const exported = sourceHTML.replace(
         /let state = \{[\s\S]*?projects: \[[\s\S]*?\],/,
-        `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},`
+        `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},\n  messages: [],\n  loggedIn: false,\n  status: ${JSON.stringify(state.status)},`
       );
 
       const blob = new Blob([exported], { type: 'text/html;charset=utf-8' });
@@ -1130,7 +1340,7 @@ function exportHTML() {
 
       html = html.replace(
         /let state = \{[\s\S]*?projects: \[[\s\S]*?\],/,
-        `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},`
+        `let state = {\n  password: ${JSON.stringify(state.password)},\n  email: ${JSON.stringify(state.email)},\n  emailjs: ${JSON.stringify(state.emailjs)},\n  projects: ${projectsJSON},\n  messages: [],\n  loggedIn: false,\n  status: ${JSON.stringify(state.status)},`
       );
 
       // Force loggedIn false and admin panel hidden in exported file
@@ -1153,6 +1363,7 @@ function exportHTML() {
 
 load();
 renderProjects();
+renderStatus();
 </script>
 </body>
 </html>
